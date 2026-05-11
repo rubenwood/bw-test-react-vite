@@ -33,3 +33,11 @@ npm run dev
 then
 
 open http://localhost:5173
+
+## Tests
+
+There are some unit tests in client/src/tests/filterSpaces.test.ts
+you can run those test with (assuming your cwd is root):
+```bash
+npx tsx .\client\src\tests\filterSpaces.test.ts
+```
