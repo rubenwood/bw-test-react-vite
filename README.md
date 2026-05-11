@@ -20,7 +20,6 @@ npm run build
 
 in server:
 ```bash
-```bash
 npm install
 npm run build
 ```
