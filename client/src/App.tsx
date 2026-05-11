@@ -2,9 +2,6 @@ import { useEffect, useState } from 'react'
 import type { Space } from '../../shared/spaces';
 
 
-function BuildingDropDown(){
-
-}
 
 type SpaceSectionProps = { space: Space } 
 function SpaceSection({ space }: SpaceSectionProps){ 
@@ -24,6 +21,15 @@ function SpacesList({ spaces }: SpaceListProps){
   )
 }
 
+function BuildingDropDown({ spaces }: SpaceListProps){
+  return (
+    <select>
+      {spaces.map((space) => <option key={`option-space-${space.id}`}>{space.building}</option>)}
+    </select>
+  )
+}
+
+
 function App() {
   const [spaces, setSpaces] = useState<Space[] | null>(null)
 
@@ -42,12 +48,15 @@ function App() {
   return (
     <div>
       <h1>Community Hub</h1>
-      <select>
-        <option></option>
-      </select>
+      
 
       {
-        spaces != null ? <SpacesList spaces={spaces} /> : <p>Loading spaces...</p>        
+        spaces != null ? 
+        <>
+          <BuildingDropDown spaces={spaces}/>
+          <br/>
+          <SpacesList spaces={spaces} />
+        </>: <p>Loading spaces...</p>        
       }
     </div>
   )
