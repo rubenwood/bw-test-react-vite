@@ -1,16 +1,31 @@
 import { useEffect, useState } from 'react'
 import type { Space } from '../../shared/spaces';
 
+
+function BuildingDropDown(){
+
+}
+
+type SpaceSectionProps = { space: Space } 
+function SpaceSection({ space }: SpaceSectionProps){ 
+  return ( 
+    <section className='card'>
+      <p>{space.name}</p>
+      <p>{space.building}</p>
+      <p>{space.available ? `Available` : `Unavailable`}</p>
+    </section>) }
+
+type SpaceListProps = { spaces: Space[] }
+function SpacesList({ spaces }: SpaceListProps){
+  return(
+    <>
+      {spaces.map((space) => <SpaceSection key={`space-${space.id}`} space={space} />)}
+    </>
+  )
+}
+
 function App() {
-  const [msg, setMsg] = useState<any | null>(null)
   const [spaces, setSpaces] = useState<Space[] | null>(null)
-
-  const TestAPI = async () => {
-    const resp = await (await fetch('/api/test')).json();
-    console.log(resp);
-
-    setMsg(resp);
-  }
 
   const getSpaces = async () => {
     console.log("Getting spaces")
@@ -30,10 +45,9 @@ function App() {
       <select>
         <option></option>
       </select>
-      {msg != null ? <p>{JSON.stringify(msg)}</p> : null }
 
       {
-        spaces != null ? <p>{JSON.stringify(spaces)}</p> : <p>Loading spaces...</p>        
+        spaces != null ? <SpacesList spaces={spaces} /> : <p>Loading spaces...</p>        
       }
     </div>
   )

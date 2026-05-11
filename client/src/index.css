@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+.card {
+  @apply bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition;
+}
+
+
+
+
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
