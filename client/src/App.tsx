@@ -42,9 +42,29 @@ function BuildingDropDown({buildings, selectedBuilding, onChange,}: BuildingDrop
   )
 }
 
+type AvailabilityDropDownProps = {
+  selectedAvailability: string
+  onChange: (value: string) => void
+}
+
+function AvailabilityDropDown({selectedAvailability, onChange,}: AvailabilityDropDownProps) {
+  return (
+    <select
+      value={selectedAvailability}
+      onChange={(e) => onChange(e.target.value)}
+    >
+      <option value='all'>All</option>
+      <option value='available'>Available</option>
+      <option value='unavailable'>Unavailable</option>
+    </select>
+  )
+}
+
+
 function App() {
   const [spaces, setSpaces] = useState<Space[] | null>(null)
   const [selectedBuilding, setSelectedBuilding] = useState('all')
+  const [selectedAvailability, setSelectedAvailability] = useState('all')
 
   // this gets the spaces
   const getSpaces = async () => {
@@ -75,14 +95,21 @@ function App() {
   const filteredSpaces = useMemo(() => {
     if (!spaces) return []
 
-    if (selectedBuilding === 'all') {
-      return spaces
-    }
+    return spaces.filter((space) => {
+      // building filter (building id)
+      const matchesBuilding =
+        selectedBuilding === 'all' ||
+        space.building.id === selectedBuilding
 
-    return spaces.filter(
-      (space) => space.building.id === selectedBuilding
-    )
-  }, [spaces, selectedBuilding])
+      // availability filter
+      const matchesAvailability =
+        selectedAvailability === 'all' ||
+        (selectedAvailability === 'available' && space.available) ||
+        (selectedAvailability === 'unavailable' && !space.available)
+
+      return matchesBuilding && matchesAvailability
+    })
+  }, [spaces, selectedBuilding, selectedAvailability])
 
   
 
@@ -96,10 +123,21 @@ function App() {
       {
         spaces != null ? 
         <>
-          <BuildingDropDown 
-            buildings={buildings}
-            selectedBuilding={selectedBuilding}
-            onChange={setSelectedBuilding}/>
+          <div className='flex gap-2'>
+            <p>Building:</p>
+            <BuildingDropDown 
+              buildings={buildings}
+              selectedBuilding={selectedBuilding}
+              onChange={setSelectedBuilding}/>
+          </div>
+          <br/>
+          <div className='flex gap-2'>
+            <p>Availability:</p>
+            <AvailabilityDropDown
+              selectedAvailability={selectedAvailability}
+              onChange={setSelectedAvailability}
+            />
+          </div>
           <br/>
           <SpacesList spaces={filteredSpaces} />
         </>: <p>Loading spaces...</p>        

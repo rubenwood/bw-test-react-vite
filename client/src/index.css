@@ -4,7 +4,7 @@
   @apply max-w-5xl mx-auto px-4;
 }
 .card {
-  @apply bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition;
+  @apply mb-6 bg-white border text-gray-500 border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition;
 }
 
 
