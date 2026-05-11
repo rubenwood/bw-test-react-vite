@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+.container-page {
+  @apply max-w-5xl mx-auto px-4;
+}
 .card {
   @apply bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition;
 }

@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { Space } from '../../shared/spaces';
 
-
-
 type SpaceSectionProps = { space: Space } 
 function SpaceSection({ space }: SpaceSectionProps){ 
   return ( 
     <section className='card'>
       <p>{space.name}</p>
-      <p>{space.building}</p>
+      <p>{space.building.name}</p>
       <p>{space.available ? `Available` : `Unavailable`}</p>
     </section>) }
 
@@ -22,8 +20,8 @@ function SpacesList({ spaces }: SpaceListProps){
 }
 
 type BuildingDropDownProps = {
-  buildings: string[]
-  selectedBuilding: string
+  buildings: {id:string, name:string}[],
+  selectedBuilding: string,
   onChange: (building: string) => void
 }
 
@@ -36,8 +34,8 @@ function BuildingDropDown({buildings, selectedBuilding, onChange,}: BuildingDrop
       <option value='all'>All Buildings</option>
 
       {buildings.map((building) => (
-        <option key={building} value={building}>
-          {building}
+        <option key={`option-${building.id}`} value={building.id}>
+          {building.name}
         </option>
       ))}
     </select>
@@ -61,7 +59,16 @@ function App() {
   const buildings = useMemo(() => {
     if (!spaces) return []
 
-    return [...new Set(spaces.map((space) => space.building))]
+    const uniqueBuildings = new Map()
+
+    spaces.forEach((space) => {
+      uniqueBuildings.set(space.building.id, {
+        id: space.building.id,
+        name: space.building.name,
+      })
+    })
+
+    return Array.from(uniqueBuildings.values())
   }, [spaces])
 
   // this will be a list of spaces filtered by building
@@ -73,7 +80,7 @@ function App() {
     }
 
     return spaces.filter(
-      (space) => space.building === selectedBuilding
+      (space) => space.building.id === selectedBuilding
     )
   }, [spaces, selectedBuilding])
 
@@ -84,7 +91,7 @@ function App() {
   }, [])
 
   return (
-    <div>
+    <div className='container-page'>
       <h1>Community Hub</h1>
       {
         spaces != null ? 
