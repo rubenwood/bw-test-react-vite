@@ -1,0 +1,62 @@
+# ------------------------
+# Dependencies (monorepo)
+# ------------------------
+node_modules/
+**/node_modules/
+
+# ------------------------
+# Build outputs
+# ------------------------
+client/dist/
+client/build/
+server/dist/
+shared/dist/
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# ------------------------
+# Env files (VERY important)
+# ------------------------
+.env
+.env.local
+.env.*.local
+server/.env
+client/.env
+
+# ------------------------
+# Logs
+# ------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ------------------------
+# OS files
+# ------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------
+# IDEs
+# ------------------------
+.vscode/
+.idea/
+
+# ------------------------
+# Vite / frontend cache
+# ------------------------
+client/.vite/
+
+# ------------------------
+# Optional: testing
+# ------------------------
+coverage/
+
+# ------------------------
+# Render / deployment
+# ------------------------
+render.yaml
