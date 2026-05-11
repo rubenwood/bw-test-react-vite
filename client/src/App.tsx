@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { Space } from '../../shared/spaces';
+import { filterSpaces } from './utils/filter';
 
 type SpaceSectionProps = { space: Space } 
 function SpaceSection({ space }: SpaceSectionProps){ 
   return ( 
     <section className='card'>
-      <p>{space.name}</p>
-      <p>{space.building.name}</p>
+      <p>Name: {space.name}</p>
+      <p>Building: {space.building.name}</p>
       <p>{space.available ? `Available` : `Unavailable`}</p>
     </section>) }
 
@@ -95,20 +96,11 @@ function App() {
   const filteredSpaces = useMemo(() => {
     if (!spaces) return []
 
-    return spaces.filter((space) => {
-      // building filter (building id)
-      const matchesBuilding =
-        selectedBuilding === 'all' ||
-        space.building.id === selectedBuilding
-
-      // availability filter
-      const matchesAvailability =
-        selectedAvailability === 'all' ||
-        (selectedAvailability === 'available' && space.available) ||
-        (selectedAvailability === 'unavailable' && !space.available)
-
-      return matchesBuilding && matchesAvailability
-    })
+     return filterSpaces(
+      spaces,
+      selectedBuilding,
+      selectedAvailability
+    )
   }, [spaces, selectedBuilding, selectedAvailability])
 
   
