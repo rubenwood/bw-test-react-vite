@@ -27,7 +27,7 @@ app.get('/api/spaces', (req: Request, res: Response) => {
 app.use(express.static(path.join(__dirname, "../../client/dist")))
 
 app.use((req: Request, res: Response) => {
-  res.sendFile(path.resolve(__dirname, '../client/dist/index.html'))
+  res.sendFile(path.resolve(__dirname, '../../client/dist/index.html'))
 })
 
 app.listen(PORT, () => {
