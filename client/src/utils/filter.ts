@@ -1,5 +1,7 @@
 import type { Space } from '../../../shared/spaces'
 
+// this isnt the greatest, this function would need to expand as we add more filters,
+// perhaps we need a more sophisticated filter object?
 export function filterSpaces( spaces: Space[], selectedBuilding: string, selectedAvailability: string): Space[] {
   return spaces.filter((space) => {
     // building filter (building id)
