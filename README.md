@@ -33,6 +33,13 @@ then
 
 open http://localhost:5173
 
+
+## Deployment
+
+This project is deployed on Render.
+
+You can access it here: https://bw-test-react-vite.onrender.com/
+
 ## Tests
 
 There are some unit tests in client/src/tests/filterSpaces.test.ts
