@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Space } from '../../shared/spaces';
 
 
@@ -21,18 +21,34 @@ function SpacesList({ spaces }: SpaceListProps){
   )
 }
 
-function BuildingDropDown({ spaces }: SpaceListProps){
+type BuildingDropDownProps = {
+  buildings: string[]
+  selectedBuilding: string
+  onChange: (building: string) => void
+}
+
+function BuildingDropDown({buildings, selectedBuilding, onChange,}: BuildingDropDownProps) {
   return (
-    <select>
-      {spaces.map((space) => <option key={`option-space-${space.id}`}>{space.building}</option>)}
+    <select
+      value={selectedBuilding}
+      onChange={(e) => onChange(e.target.value)}
+    >
+      <option value='all'>All Buildings</option>
+
+      {buildings.map((building) => (
+        <option key={building} value={building}>
+          {building}
+        </option>
+      ))}
     </select>
   )
 }
 
-
 function App() {
   const [spaces, setSpaces] = useState<Space[] | null>(null)
+  const [selectedBuilding, setSelectedBuilding] = useState('all')
 
+  // this gets the spaces
   const getSpaces = async () => {
     console.log("Getting spaces")
     const resp = await (await fetch('/api/spaces')).json();
@@ -41,6 +57,28 @@ function App() {
     setSpaces(resp);
   }
 
+  // this stores a list of buildings
+  const buildings = useMemo(() => {
+    if (!spaces) return []
+
+    return [...new Set(spaces.map((space) => space.building))]
+  }, [spaces])
+
+  // this will be a list of spaces filtered by building
+  const filteredSpaces = useMemo(() => {
+    if (!spaces) return []
+
+    if (selectedBuilding === 'all') {
+      return spaces
+    }
+
+    return spaces.filter(
+      (space) => space.building === selectedBuilding
+    )
+  }, [spaces, selectedBuilding])
+
+  
+
   useEffect(() => {
     getSpaces();
   }, [])
@@ -48,14 +86,15 @@ function App() {
   return (
     <div>
       <h1>Community Hub</h1>
-      
-
       {
         spaces != null ? 
         <>
-          <BuildingDropDown spaces={spaces}/>
+          <BuildingDropDown 
+            buildings={buildings}
+            selectedBuilding={selectedBuilding}
+            onChange={setSelectedBuilding}/>
           <br/>
-          <SpacesList spaces={spaces} />
+          <SpacesList spaces={filteredSpaces} />
         </>: <p>Loading spaces...</p>        
       }
     </div>
